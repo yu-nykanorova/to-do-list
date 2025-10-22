@@ -1,0 +1,96 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: darkblue;
+    background: rgb(222, 238, 231);
+}
+
+body {
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 36px;
+    color: darkblue;
+    margin-bottom: 10px;
+}
+
+h1 span:first-child {
+    color: orange;
+}
+
+h1 span:last-child {
+    color: rgb(187, 6, 75);
+}
+
+#todo-form {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid midnightblue;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#todo-input {
+    width: 50%;
+    padding: 5px;
+    outline: 0;
+    border: 1px solid midnightblue;
+    border-radius: 5px;
+}
+
+button {
+    border: 1px solid midnightblue;
+    background: midnightblue;
+    color: aliceblue;
+    border-radius: 5px;
+    padding: 5px 25px;
+
+}
+
+#todo-list {
+    padding: 20px;
+    list-style-type: none;
+    border: 1px solid midnightblue;
+    border-radius: 5px;
+    text-align: left;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    padding: 5px 0;
+    border-bottom: 1px solid rgb(187, 6, 75);
+    border-top: 1px solid rgb(187, 6, 75);
+    font-size: 16px;
+}
+
+li:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.delete-button {
+    background-color:rgb(187, 6, 75);
+    color: antiquewhite;
+}
+
+.done {
+    text-decoration: line-through rgb(187, 6, 75) solid;
+    color: gray;
+}
+
