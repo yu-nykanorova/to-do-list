@@ -10,7 +10,7 @@ html, body {
     font-size: 24px;
     font-weight: 600;
     color: darkblue;
-    background: rgb(222, 238, 231);
+    background: rgb(235, 252, 255);
 }
 
 body {
@@ -32,20 +32,23 @@ h1 span:last-child {
     color: rgb(187, 6, 75);
 }
 
+p {
+    font-size: 18px;
+}
+
 #todo-form {
     display: flex;
     gap: 10px;
     padding: 10px;
     justify-content: center;
     align-items: center;
-    border: 1px solid midnightblue;
     border-radius: 5px;
     margin-bottom: 10px;
 }
 
 #todo-input {
     width: 50%;
-    padding: 5px;
+    padding: 10px;
     outline: 0;
     border: 1px solid midnightblue;
     border-radius: 5px;
@@ -56,7 +59,7 @@ button {
     background: midnightblue;
     color: aliceblue;
     border-radius: 5px;
-    padding: 5px 25px;
+    padding: 10px 25px;
 
 }
 
@@ -69,14 +72,13 @@ button {
 }
 
 li {
-    display: flex;
+    display: grid;
+    grid-template-columns: 25% 1fr 20%;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
     gap: 10px;
+    width: 100%;
     padding: 5px 0;
     border-bottom: 1px solid rgb(187, 6, 75);
-    border-top: 1px solid rgb(187, 6, 75);
     font-size: 16px;
 }
 
@@ -84,13 +86,28 @@ li:not(:last-child) {
     margin-bottom: 10px;
 }
 
+li span {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+li span:first-child {
+    color: rgb(102, 104, 99);
+}
+
 .delete-button {
     background-color:rgb(187, 6, 75);
     color: antiquewhite;
+    justify-self: end;
 }
 
 .done {
     text-decoration: line-through rgb(187, 6, 75) solid;
     color: gray;
+}
+
+.hidden {
+    display: none;
 }
 
