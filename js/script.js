@@ -6,32 +6,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const list = document.querySelector("#todo-list");
     
     let tasks = [];
-
-    list.addEventListener("click", (e) => {
-        const liElement = e.target.closest("li");
-        const btn = e.target.closest("button");
-        const text = e.target.classList.contains("span-text");
-        
-        if (!liElement) {
-            return;
-        }
-
-        const taskId = liElement.dataset.id;
-
-        if (text) {
-            const task = tasks.find((task) => task.id === taskId);
-            task.completed = !task.completed;
-            renderTasks();
-        }
-
-        if (btn) {
-            tasks = tasks.filter((task) => {
-                return task.id !== String(taskId);
-            });
-            renderTasks();
-        }
-    })
-
+    const savedTasks = JSON.parse(localStorage.getItem("tasks"));
+    if (savedTasks) {
+        console.log("ok");
+    } else {
+        console.log("wrong");
+    }
+    console.log(savedTasks);
 
     const noTasks = document.createElement("p");
     noTasks.textContent = "No tasks yet...";
@@ -39,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
     renderTasks();
 
     function renderTasks () {
-        console.log("render");
         list.innerHTML = "";
 
         if(tasks.length === 0) {
@@ -49,6 +29,8 @@ document.addEventListener("DOMContentLoaded", function () {
         tasks.forEach((task) => {
             addTask(task);
         })
+
+        localStorage.setItem("tasks", JSON.stringify(tasks));
     }
 
     function addTask (newTask) {
@@ -82,7 +64,33 @@ document.addEventListener("DOMContentLoaded", function () {
         tasks.push(task);
         renderTasks();
         form.reset();
-    })
+    });
+
+    list.addEventListener("click", (e) => {
+        const liElement = e.target.closest("li");
+        const btn = e.target.closest("button");
+        const text = e.target.classList.contains("span-text");
+        
+        if (!liElement) {
+            return;
+        }
+
+        const taskId = liElement.dataset.id;
+
+        if (text) {
+            const task = tasks.find((task) => task.id === taskId);
+            task.completed = !task.completed;
+            renderTasks();
+        }
+
+        if (btn) {
+            tasks = tasks.filter((task) => {
+                return task.id !== String(taskId);
+            });
+            renderTasks();
+            localStorage.removeItem(String(taskId));
+        }
+    });
 });
 
 

@@ -1,3 +1,12 @@
+:root {
+    --main-text-color: #262F34;
+    --main-bg-color: #efedea;
+    --red-color: #FA4032;
+    --orange-color: orange;
+    --gray-color: gray;
+    --green-dark-color: #1B4B5A;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -9,31 +18,76 @@ html, body {
     font-family: sans-serif;
     font-size: 24px;
     font-weight: 600;
-    color: darkblue;
-    background: rgb(235, 252, 255);
+    color: var(--main-text-color);
+    background: var(--main-bg-color);
 }
 
 body {
-    padding: 20px;
+    padding: 50px 20px;
     text-align: center;
+    background: radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url("img/office_bg.jpg") center / cover no-repeat;
+}
+
+.dark {
+    --main-text-color: #efedea;
+    --main-bg-color: #262F34;
+}
+
+.container {
+    max-width: 800px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 30px 50px;
+    display: flex;
+    flex-direction: column;
+    background: var(--main-bg-color);
+    border-radius: 5px;
+    position: relative;
+}
+
+.container svg {
+    width: 30px;
+}
+
+.icons {
+    padding: 10px;
+    position: absolute;
+    max-width: 400px;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+#sun {
+    display: none;
+    fill: var(--main-bg-color);
+}
+
+#moon {
+    display: block;
+    fill: var(--main-text-colors);
 }
 
 h1 {
     font-size: 36px;
-    color: darkblue;
+    color: var(--main-text-color);
     margin-bottom: 10px;
 }
 
 h1 span:first-child {
-    color: orange;
+    color: var(--orange-color);
 }
 
 h1 span:last-child {
-    color: rgb(187, 6, 75);
+    color: var(--red-color);
 }
 
 p {
-    font-size: 18px;
+    font-size: 20px;
+    text-align: center;
 }
 
 #todo-form {
@@ -43,43 +97,44 @@ p {
     justify-content: center;
     align-items: center;
     border-radius: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 #todo-input {
     width: 50%;
     padding: 10px;
     outline: 0;
-    border: 1px solid midnightblue;
+    border: 1px solid var(--main-text-color);
     border-radius: 5px;
 }
 
 button {
-    border: 1px solid midnightblue;
-    background: midnightblue;
-    color: aliceblue;
+    max-width: 80px;
+    border: 0;
+    background: var(--green-dark-color);
+    color: var(--main-bg-color);
+    font-size: 16px;
     border-radius: 5px;
-    padding: 10px 25px;
-
+    padding: 10px 15px;
 }
 
 #todo-list {
     padding: 20px;
     list-style-type: none;
-    border: 1px solid midnightblue;
     border-radius: 5px;
     text-align: left;
+    overflow-y: auto;
 }
 
 li {
     display: grid;
-    grid-template-columns: 25% 1fr 20%;
+    grid-template-columns: 20% 1fr 20%;
     align-items: center;
     gap: 10px;
     width: 100%;
     padding: 5px 0;
-    border-bottom: 1px solid rgb(187, 6, 75);
-    font-size: 16px;
+    border-bottom: 1px solid var(--red-color);
+    font-size: 18px;
 }
 
 li:not(:last-child) {
@@ -94,17 +149,18 @@ li span {
 
 li span:first-child {
     color: rgb(102, 104, 99);
+    font-size: 14px;
 }
 
 .delete-button {
-    background-color:rgb(187, 6, 75);
-    color: antiquewhite;
+    background-color: var(--red-color);
+    color: var(--main-bg-color);
     justify-self: end;
 }
 
 .done {
-    text-decoration: line-through rgb(187, 6, 75) solid;
-    color: gray;
+    text-decoration: line-through var(--red-color) solid;
+    color: var(--gray-color);
 }
 
 .hidden {
