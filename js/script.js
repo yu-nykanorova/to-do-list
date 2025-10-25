@@ -6,31 +6,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const list = document.querySelector("#todo-list");
     
     let tasks = [];
-    const savedTasks = JSON.parse(localStorage.getItem("tasks"));
-    if (savedTasks) {
-        console.log("ok");
-    } else {
-        console.log("wrong");
-    }
-    console.log(savedTasks);
-
-    const noTasks = document.createElement("p");
-    noTasks.textContent = "No tasks yet...";
 
     renderTasks();
-
+    
     function renderTasks () {
         list.innerHTML = "";
 
-        if(tasks.length === 0) {
-            return list.append(noTasks);
+        tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+        if (tasks.length === 0) {
+            list.innerHTML = "<p>No tasks yet...</p>";
+            return;
         }
 
         tasks.forEach((task) => {
             addTask(task);
-        })
-
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+        });
     }
 
     function addTask (newTask) {
@@ -52,6 +43,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    function updateTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        renderTasks();
+    }
+
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         const id = Date.now();
@@ -62,8 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
             completed: false,
         }
         tasks.push(task);
-        renderTasks();
         form.reset();
+        updateTasks();
     });
 
     list.addEventListener("click", (e) => {
@@ -80,15 +76,14 @@ document.addEventListener("DOMContentLoaded", function () {
         if (text) {
             const task = tasks.find((task) => task.id === taskId);
             task.completed = !task.completed;
-            renderTasks();
+            updateTasks();
         }
 
         if (btn) {
             tasks = tasks.filter((task) => {
                 return task.id !== String(taskId);
             });
-            renderTasks();
-            localStorage.removeItem(String(taskId));
+            updateTasks();
         }
     });
 });

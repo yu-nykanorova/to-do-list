@@ -1,10 +1,14 @@
 :root {
     --main-text-color: #262F34;
     --main-bg-color: #efedea;
+    --white-color: #fefefe;
     --red-color: #FA4032;
     --orange-color: orange;
     --gray-color: gray;
     --green-dark-color: #1B4B5A;
+
+    --box-shadow-dark: 1px 1px 5px 1px rgba(0, 0, 0, 0.3);
+    --box-shadow-light: 1px 1px 5px 1px rgba(255, 255, 255, 0.3);
 }
 
 * {
@@ -23,6 +27,7 @@ html, body {
 }
 
 body {
+    font-family: "Zalando Sans", sans-serif;
     padding: 50px 20px;
     text-align: center;
     background: radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url("img/office_bg.jpg") center / cover no-repeat;
@@ -37,7 +42,7 @@ body {
     max-width: 800px;
     height: 100%;
     margin: 0 auto;
-    padding: 30px 50px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     background: var(--main-bg-color);
@@ -46,19 +51,22 @@ body {
 }
 
 .container svg {
-    width: 30px;
+    width: 20px;
 }
 
 .icons {
-    padding: 10px;
+    padding: 5px;
     position: absolute;
     max-width: 400px;
-    top: 0;
-    right: 0;
+    top: 22px;
+    right: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
+    background: var(--white-color);
+    border-radius: 5px;
+    box-shadow: var(--box-shadow-dark);
 }
 
 #sun {
@@ -72,7 +80,7 @@ body {
 }
 
 h1 {
-    font-size: 36px;
+    font-size: 32px;
     color: var(--main-text-color);
     margin-bottom: 10px;
 }
@@ -95,17 +103,19 @@ p {
     gap: 10px;
     padding: 10px;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 #todo-input {
     width: 50%;
     padding: 10px;
     outline: 0;
-    border: 1px solid var(--main-text-color);
+    border: 0;
     border-radius: 5px;
+    background: var(--white-color);
+    box-shadow: var(--box-shadow-dark);
 }
 
 button {
@@ -116,10 +126,11 @@ button {
     font-size: 16px;
     border-radius: 5px;
     padding: 10px 15px;
+    box-shadow: var(--box-shadow-dark);
 }
 
 #todo-list {
-    padding: 20px;
+    padding: 20px 0;
     list-style-type: none;
     border-radius: 5px;
     text-align: left;
@@ -134,7 +145,7 @@ li {
     width: 100%;
     padding: 5px 0;
     border-bottom: 1px solid var(--red-color);
-    font-size: 18px;
+    font-size: 16px;
 }
 
 li:not(:last-child) {
@@ -150,6 +161,10 @@ li span {
 li span:first-child {
     color: rgb(102, 104, 99);
     font-size: 14px;
+    background: var(--white-color);
+    padding: 1px;
+    border-radius: 5px;
+    text-align: center;
 }
 
 .delete-button {
