@@ -5,7 +5,7 @@
     --red-color: #FA4032;
     --orange-color: orange;
     --gray-color: gray;
-    --green-dark-color: #1B4B5A;
+    --green-color: #1B4B5A;
 
     --box-shadow-dark: 1px 1px 5px 1px rgba(0, 0, 0, 0.3);
     --box-shadow-light: 1px 1px 5px 1px rgba(255, 255, 255, 0.3);
@@ -22,20 +22,36 @@ html, body {
     font-family: sans-serif;
     font-size: 24px;
     font-weight: 600;
-    color: var(--main-text-color);
     background: var(--main-bg-color);
 }
 
 body {
+    padding: 50px 30px;
     font-family: "Zalando Sans", sans-serif;
-    padding: 50px 20px;
     text-align: center;
-    background: radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url("img/office_bg.jpg") center / cover no-repeat;
+    color: var(--main-text-color);
+    background: url("img/office_bg.jpg") center / cover no-repeat;
+    transition: .2s all ease-in-out;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+    z-index: 0;
 }
 
 .dark {
     --main-text-color: #efedea;
-    --main-bg-color: #262F34;
+    --main-bg-color: #1d2232;
+    --green-color: #4ea49d;
+    --red-color: #ff6055;
+    --orange-color: rgb(255, 201, 100);
 }
 
 .container {
@@ -48,13 +64,14 @@ body {
     background: var(--main-bg-color);
     border-radius: 5px;
     position: relative;
+    z-index: 1;
 }
 
 .container svg {
     width: 20px;
 }
 
-.icons {
+#icons {
     padding: 5px;
     position: absolute;
     max-width: 400px;
@@ -76,7 +93,7 @@ body {
 
 #moon {
     display: block;
-    fill: var(--main-text-colors);
+    fill: var(--main-text-color);
 }
 
 h1 {
@@ -107,7 +124,6 @@ p {
     border-radius: 5px;
     margin-bottom: 10px;
 }
-
 #todo-input {
     width: 50%;
     padding: 10px;
@@ -118,15 +134,20 @@ p {
     box-shadow: var(--box-shadow-dark);
 }
 
+#todo-input:focus {
+    outline: 1px solid var(--orange-color);
+}
+
 button {
     max-width: 80px;
     border: 0;
-    background: var(--green-dark-color);
+    background: var(--green-color);
     color: var(--main-bg-color);
     font-size: 16px;
     border-radius: 5px;
     padding: 10px 15px;
     box-shadow: var(--box-shadow-dark);
+    cursor: pointer;
 }
 
 #todo-list {
@@ -139,7 +160,7 @@ button {
 
 li {
     display: grid;
-    grid-template-columns: 20% 1fr 20%;
+    grid-template-columns: 1fr minmax(150px, 400px) 1fr 1fr;
     align-items: center;
     gap: 10px;
     width: 100%;
@@ -162,15 +183,22 @@ li span:first-child {
     color: rgb(102, 104, 99);
     font-size: 14px;
     background: var(--white-color);
-    padding: 1px;
+    padding: 1px 3px;
     border-radius: 5px;
     text-align: center;
 }
 
-.delete-button {
-    background-color: var(--red-color);
+.delete-button, .update-button {
     color: var(--main-bg-color);
     justify-self: end;
+}
+
+.delete-button {
+    background-color: var(--red-color);
+}
+
+.update-button {
+    background-color: var(--orange-color);
 }
 
 .done {

@@ -1,13 +1,31 @@
 "use strict";
 
 document.addEventListener("DOMContentLoaded", function () {
+    const body = document.querySelector("body");
+    const container = document.querySelector("#container");
     const input = document.querySelector("#todo-input");
     const form = document.querySelector("#todo-form");
     const list = document.querySelector("#todo-list");
-    
-    let tasks = [];
+    const iconMoon = document.getElementById("moon");
+    const iconSun = document.getElementById("sun");
 
+    let tasks = [];
+    let isDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
+     
+    applyDarkMode(isDarkMode);
     renderTasks();
+
+    function applyDarkMode (darkMode) {
+        if (darkMode) {
+            body.classList.add("dark");
+            iconMoon.style.display = "none";
+            iconSun.style.display = "block";
+        } else {
+            body.classList.remove("dark");
+            iconSun.style.display = "none";
+            iconMoon.style.display = "block";
+        }
+    }    
     
     function renderTasks () {
         list.innerHTML = "";
@@ -24,32 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function addTask (newTask) {
-        const newTaskContainer = document.createElement("li");
-        newTaskContainer.dataset.id = newTask.id;
-        const newTaskDate = document.createElement("span");
-        const newTaskText = document.createElement("span");
-        newTaskText.classList.add("span-text");
-        const btnDel = document.createElement("button");
-        newTaskText.textContent = newTask.text;
-        newTaskDate.textContent = newTask.id;
-        btnDel.textContent = "Delete";
-        btnDel.classList.add("delete-button");
-        newTaskContainer.append(newTaskDate, newTaskText, btnDel);
-        list.append(newTaskContainer);
-
-        if (newTask.completed) {
-            newTaskText.classList.add("done");
-        }
-    }
-
-    function updateTasks() {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-        renderTasks();
-    }
-
-    form.addEventListener("submit", (e) => {
-        e.preventDefault();
+    function createTask () {
         const id = Date.now();
         const date = new Date(id);
         const task = {
@@ -58,13 +51,46 @@ document.addEventListener("DOMContentLoaded", function () {
             completed: false,
         }
         tasks.push(task);
+    }
+
+    function addTask (newTask) {
+        const newTaskContainer = document.createElement("li");
+        newTaskContainer.dataset.id = newTask.id;
+        const newTaskDate = document.createElement("span");
+        const newTaskText = document.createElement("span");
+        newTaskText.classList.add("span-text");
+        const btnDel = document.createElement("button");
+        const btnUpdate = document.createElement("button");
+        newTaskText.textContent = newTask.text;
+        newTaskDate.textContent = newTask.id;
+        btnDel.textContent = "Delete";
+        btnUpdate.textContent = "Update";
+        btnDel.classList.add("delete-button");
+        btnUpdate.classList.add("update-button");
+        newTaskContainer.append(newTaskDate, newTaskText, btnUpdate, btnDel);
+        list.append(newTaskContainer);
+
+        if (newTask.completed) {
+            newTaskText.classList.add("done");
+        }
+    }
+
+    function updateTaskList() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        renderTasks();
+    }
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        createTask();
+        updateTaskList();
         form.reset();
-        updateTasks();
     });
 
     list.addEventListener("click", (e) => {
         const liElement = e.target.closest("li");
-        const btn = e.target.closest("button");
+        const btnDel = e.target.classList.contains("delete-button");
+        const btnUpdate = e.target.classList.contains("update-button");
         const text = e.target.classList.contains("span-text");
         
         if (!liElement) {
@@ -76,14 +102,27 @@ document.addEventListener("DOMContentLoaded", function () {
         if (text) {
             const task = tasks.find((task) => task.id === taskId);
             task.completed = !task.completed;
-            updateTasks();
+            updateTaskList();
         }
 
-        if (btn) {
+        if (btnDel) {
             tasks = tasks.filter((task) => {
                 return task.id !== String(taskId);
             });
-            updateTasks();
+            updateTaskList();
+        }
+
+        if (btnUpdate) {
+            console.log("ok");
+        }
+    });
+
+    container.addEventListener("click", (e) => {
+        
+        if (e.target.closest("#moon") || e.target.closest("#sun")) {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
+            applyDarkMode(isDarkMode);
         }
     });
 });
