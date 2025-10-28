@@ -8,12 +8,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const list = document.querySelector("#todo-list");
     const iconMoon = document.getElementById("moon");
     const iconSun = document.getElementById("sun");
+    const tasksAmount = document.getElementById("amount");
 
     let tasks = [];
     let isDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
      
     applyDarkMode(isDarkMode);
     renderTasks();
+
+    // to toggle dark mode
 
     function applyDarkMode (darkMode) {
         if (darkMode) {
@@ -27,6 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }    
     
+    // to render task list
+
     function renderTasks () {
         list.innerHTML = "";
 
@@ -40,18 +45,29 @@ document.addEventListener("DOMContentLoaded", function () {
         tasks.forEach((task) => {
             addTask(task);
         });
+
+        if (tasks.length === 1) {
+            tasksAmount.textContent = `${tasks.length} task`;
+        } else {
+            tasksAmount.textContent = `${tasks.length} tasks`;
+        }
     }
+
+    // to create task item
 
     function createTask () {
         const id = Date.now();
         const date = new Date(id);
         const task = {
-            id: date.toLocaleString("uk-UA"),
+            id: id,
+            date: date.toLocaleString("uk-UA"),
             text: input.value,
             completed: false,
         }
         tasks.push(task);
     }
+
+    // to add task to the DOM
 
     function addTask (newTask) {
         const newTaskContainer = document.createElement("li");
@@ -62,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const btnDel = document.createElement("button");
         const btnUpdate = document.createElement("button");
         newTaskText.textContent = newTask.text;
-        newTaskDate.textContent = newTask.id;
+        newTaskDate.textContent = newTask.date;
         btnDel.textContent = "Delete";
         btnUpdate.textContent = "Update";
         btnDel.classList.add("delete-button");
@@ -75,10 +91,53 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // to update task item
+
+    function updateTask (liElement, taskToUpdate) {
+        const btnUpdate = liElement.querySelector("button:first-of-type");
+        const spanText = liElement.querySelector("span:nth-of-type(2)");
+        const inputUpdate = document.createElement("input");
+        inputUpdate.type = "text";
+        inputUpdate.classList.add("input-update");
+        inputUpdate.value = taskToUpdate.text;
+        btnUpdate.textContent = "Save";
+        console.log(btnUpdate);
+        spanText.replaceWith(inputUpdate);
+        inputUpdate.focus();
+
+        inputUpdate.addEventListener("click", (e) => e.stopPropagation());
+
+        function save () {
+            const newValue = inputUpdate.value.trim();
+        
+            if (newValue && newValue !== taskToUpdate.text) {
+                const updatedTask = tasks.find((task) => task.id === taskToUpdate.id);
+                updatedTask.text = newValue;
+                updateTaskList();
+            } else {
+                renderTasks();
+            }
+        }
+
+        inputUpdate.addEventListener("blur", save);
+
+        inputUpdate.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                save();
+            } else if (e.key === "Escape") {
+                renderTasks();
+            }
+        })
+    }
+
+    // to update task list (using localStorage)
+
     function updateTaskList() {
         localStorage.setItem("tasks", JSON.stringify(tasks));
         renderTasks();
     }
+
+    // submit event to create task
 
     form.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -86,6 +145,11 @@ document.addEventListener("DOMContentLoaded", function () {
         updateTaskList();
         form.reset();
     });
+
+    // task list click events: 
+    // - to mark task is done,
+    // - to delete task,
+    // - to update task,
 
     list.addEventListener("click", (e) => {
         const liElement = e.target.closest("li");
@@ -97,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const taskId = liElement.dataset.id;
+        const taskId = Number(liElement.dataset.id);
 
         if (text) {
             const task = tasks.find((task) => task.id === taskId);
@@ -107,17 +171,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (btnDel) {
             tasks = tasks.filter((task) => {
-                return task.id !== String(taskId);
+                return task.id !== taskId;
             });
             updateTaskList();
         }
 
         if (btnUpdate) {
-            console.log("ok");
+            const taskToUpdate = tasks.find((task) => task.id === taskId);
+            updateTask(liElement, taskToUpdate);
         }
     });
 
+    // container click event:
+    // - to toggle dark mode,
+    // - to clear task list
+
     container.addEventListener("click", (e) => {
+        const btnClear = e.target.closest("#clear-button");
+
+        if (btnClear) {
+            const answer = confirm("Delete all tasks?");
+            if (!answer) {
+                return;
+            }
+
+            list.innerHTML = "<p>No tasks yet...</p>";
+            localStorage.removeItem("tasks");
+        }
         
         if (e.target.closest("#moon") || e.target.closest("#sun")) {
             isDarkMode = !isDarkMode;
