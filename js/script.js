@@ -9,7 +9,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const iconMoon = document.getElementById("moon");
     const iconSun = document.getElementById("sun");
     const tasksAmount = document.getElementById("amount");
-
+    const btnClearAll = document.getElementById("clear-button");
+    const filterContainer = document.getElementById("filter");
+    
+    let currentFilter = "all";
     let tasks = [];
     let isDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
      
@@ -34,22 +37,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderTasks () {
         list.innerHTML = "";
-
         tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-        if (tasks.length === 0) {
-            list.innerHTML = "<p>No tasks yet...</p>";
-            return;
+        let filteredTasks = tasks;
+
+        if (currentFilter === "done") {
+            filteredTasks = tasks.filter(task => task.completed);
+        } else if (currentFilter === "active") {
+            filteredTasks = tasks.filter(task => !task.completed);
         }
 
-        tasks.forEach((task) => {
+        if (filteredTasks.length === 0) {
+            list.innerHTML = "<p>No tasks yet...</p>";
+            tasksAmount.classList.add("hidden");
+            btnClearAll.classList.add("hidden");
+            return;
+        } else {
+            tasksAmount.classList.remove("hidden");
+            btnClearAll.classList.remove("hidden");
+        }
+
+        filteredTasks.forEach((task) => {
             addTask(task);
         });
 
-        if (tasks.length === 1) {
-            tasksAmount.textContent = `${tasks.length} task`;
+        if (filteredTasks.length === 1) {
+            tasksAmount.textContent = `${filteredTasks.length} task`;
         } else {
-            tasksAmount.textContent = `${tasks.length} tasks`;
+            tasksAmount.textContent = `${filteredTasks.length} tasks`;
         }
     }
 
@@ -137,6 +152,19 @@ document.addEventListener("DOMContentLoaded", function () {
         renderTasks();
     }
 
+    // to filter task list
+
+    filterContainer.addEventListener("click", (e) => {
+        const filterInput = e.target.closest("input");
+
+        if (!filterInput) {
+            return;
+        }
+
+        currentFilter = filterInput.value;
+        renderTasks();
+    });
+
     // submit event to create task
 
     form.addEventListener("submit", (e) => {
@@ -195,8 +223,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            list.innerHTML = "<p>No tasks yet...</p>";
+            tasks = [];
             localStorage.removeItem("tasks");
+            renderTasks();
         }
         
         if (e.target.closest("#moon") || e.target.closest("#sun")) {

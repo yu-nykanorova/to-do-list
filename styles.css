@@ -5,7 +5,7 @@
     --red-color: #FA4032;
     --orange-color: orange;
     --gray-color: gray;
-    --green-color: #1b5a56;
+    --green-color: #196b49;
 
     --box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18), 0 1px 2px rgba(0, 0, 0, 0.12);
 
@@ -268,7 +268,7 @@ li span:nth-of-type(2) {
     padding: 8px;
 }
 
-.task-list-info {
+#task-list-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
